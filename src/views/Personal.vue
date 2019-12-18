@@ -18,8 +18,8 @@
     <mycell title="我的跟帖" desc="跟帖/回复"></mycell>
     <mycell title="我的收藏" desc="文章/视频"></mycell>
     <mycell title="设置" desc></mycell>
-    <div class="ict">
-      <mybutton text="退出"></mybutton>
+    <div>
+      <mybutton text="退出" class="ict" @click='tuichu'></mybutton>
     </div>
   </div>
 </template>
@@ -62,6 +62,13 @@ export default {
         console.log(err)
         this.$toast.fail('获取数据失败')
       })
+  },
+  methods: {
+    tuichu () {
+      localStorage.removeItem('heima_40')
+      localStorage.removeItem('heima-token')
+      this.$router.push({ name: 'Index' })
+    }
   }
 }
 </script>
@@ -104,10 +111,8 @@ a {
     font-size: 14px;
     margin-top: 5px;
   }
-
-  .ict {
-  align-items: center;
 }
-}
-
+ .ict {
+margin:50px auto !important;
+  }
 </style>

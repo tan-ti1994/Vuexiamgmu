@@ -12,9 +12,9 @@
     <van-dialog v-model="nicshow" title="标题" show-cancel-button @confirm="updateNickname">
       <van-field :value="current.nickname" label="昵称" placeholder="请输入昵称" ref="name" />
     </van-dialog>
-    <mycell title="密码" desc="*******" @click="mimashow=!mimashow"></mycell>
+    <mycell title="密码" desc="*******" @click="mimashow = !mimashow"></mycell>
     <van-dialog
-      v-model="mimashow "
+      v-model="mimashow"
       title="修改密码"
       show-cancel-button
       @confirm="updateNicpass"
@@ -24,7 +24,10 @@
       <van-field required label="新密码" placeholder="请输入新密码" ref="jiupass" />
     </van-dialog>
 
-    <mycell title="性别" :desc="current.gender===1?'男':'女' "></mycell>
+    <mycell title="性别" :desc="current.gender === 1 ? '男' : '女'" @click="xinshow = !xinshow"></mycell>
+    <van-dialog v-model="xinshow" title="性别" show-cancel-button @confirm="updateNixin">
+      <van-picker :columns="['女','男']" :default-index="2" @change="onChange" />
+    </van-dialog>
   </div>
 </template>
 
@@ -45,7 +48,9 @@ export default {
       id: '',
       current: {},
       nicshow: false,
-      mimashow: false
+      mimashow: false,
+      xinshow: false,
+      genderIndex: ''
     }
   },
   async mounted () {
@@ -126,9 +131,13 @@ export default {
           return
         }
         // 3.调用api方法进行密码的更新
-        let res = await editUser(this.id, { password })
+        let res = await editUser(this.id, { password: mypassword })
         if (res.data.message === '修改成功') {
+          console.log(res)
+
           this.$toast.success('修改成功')
+          localStorage.removeItem('heima_40')
+          localStorage.removeItem('heima-token')
           this.$router.push({ name: 'Login' })
         }
         console.log(res)
@@ -154,6 +163,21 @@ export default {
       } else {
         done()
       }
+    },
+    // 修改性别
+    async updateNixin () {
+      let res1 = await editUser(this.id, { gender: this.genderIndex })
+      // console.log(res1)
+      if (res1.data.message === '修改成功') {
+        this.$toast.success('修改性别成功')
+        this.current.gender = this.genderIndex
+      } else {
+        this.$toast.fail('修改性别失败')
+      }
+    },
+    // picker切换时触发的事件
+    onChange (picker, value, index) {
+      this.genderIndex = index
     }
   }
 }

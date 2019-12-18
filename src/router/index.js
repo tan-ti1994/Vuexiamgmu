@@ -6,6 +6,9 @@ import VueRouter from 'vue-router'
 import Login from '@/views/Login.vue'
 import Personal from '@/views/Personal.vue'
 import bianji from '@/views/bianji.vue'
+import Register from '@/views/Register.vue'
+import Index from '@/views/index.vue'
+import xianqingye from '../views/xianqingye.vue'
 // 3.use
 Vue.use(VueRouter)
 // 4创建路由对象,进行路由配置
@@ -13,8 +16,25 @@ var router = new VueRouter({
   routes: [
     {
       name: 'Login',
-      path: '/Login',
+      path: '/login',
       component: Login
+    }, {
+      name: 'default',
+      path: '/',
+      // 重定向
+      redirect: { name: 'Index' }
+
+    },
+    {
+      name: 'Index',
+      path: '/index',
+      component: Index
+    },
+
+    {
+      name: 'Register',
+      path: '/register',
+      component: Register
     },
     {
       name: 'Personal',
@@ -25,6 +45,11 @@ var router = new VueRouter({
       name: 'bianji',
       path: '/edit_profile/:id',
       component: bianji
+    },
+    {
+      name: 'bixianqingyeanji',
+      path: '/xianqingye/:id',
+      component: xianqingye
     }
   ]
 })

@@ -30,17 +30,23 @@ export default {
       let value = event.target.value
       // 验证当前的输入是否合法
 
-      if (this.rules && this.rules.test(value)) {
-        this.statu = true
+      if (this.rules) {
+        if (this.rules.test(value)) {
+          this.statu = true
+        } else {
+          this.statu = false
+        }
       } else {
-        this.statu = false
+        this.statu = !!value
       }
 
       this.$emit('input', value)
     },
     // 响应文本框失去焦点
     handlerblur (event) {
-      if (this.rules && !this.rules.test(event.value)) {
+      console.log(event)
+
+      if (this.rules && !this.rules.test(event.target.value)) {
         // console.log(this.msg_err)
         this.$toast.fail(this.msg_err)
       }
