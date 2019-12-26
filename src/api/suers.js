@@ -47,3 +47,16 @@ export const unFollowUser = (id) => {
     url: `/user_unfollow/${id}`
   })
 }
+// 8.获取我的关注列表
+export const getMyFollows = (id) => {
+  return axios({
+    url: `/user_follows`
+  })
+}
+
+// 9.获取我的收藏
+export const getMyCollections = (id) => {
+  return axios({
+    url: `/user_star`
+  })
+}

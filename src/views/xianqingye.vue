@@ -40,45 +40,62 @@
     <!-- 精彩跟帖 -->
     <div class="keeps">
       <h2>精彩跟帖</h2>
-      <div class="item">
+      <div class="item" v-for="item in commentList" :key="item.id">
         <div class="head">
-          <img src="../assets/logo.png" alt />
+          <img src="item.user.head_img" alt />
           <div>
-            <p>火星网友</p>
+            <p>{{ item.user.nickname }}</p>
             <span>2小时前</span>
           </div>
           <span>回复</span>
         </div>
-        <div class="text">文章说得很有道理</div>
+        <div class="text">{{ item.content }}</div>
       </div>
       <div class="more">更多跟帖</div>
     </div>
-    <!-- 评论 -->
-    <mycomment></mycomment>
+    <!-- 评论区 调用组件 -->
+    <mycomment :article="article"></mycomment>
   </div>
 </template>
 
 <script>
-import { getArticleDetail, likeArticleById } from '@/api/xinewen'
+import {
+  getArticleDetail,
+  likeArticleById,
+  getCommentsById
+} from '@/api/xinewen'
 import { followUser, unFollowUser } from '@/api/suers'
-import mycomment from '../components/mycommentArea'
+import mycomment from '@/components/mycommentArea'
 export default {
   components: {
     mycomment
   },
   data () {
     return {
-      article: {}
+      article: {},
+      commentList: []
     }
   },
   async mounted () {
     // 根据id获取文章的详情，实现文章详情的动态渲染
     let res = await getArticleDetail(this.$route.params.id)
-    // console.log(res)
+    console.log(res)
     if (res.status === 200) {
       this.article = res.data.data
+
+      // 再次发送请求获取文章的评论数据
+      let res1 = await getCommentsById(this.article.id)
+      // console.log(res1)
+      if (res1.status === 200) {
+        this.commentList = res1.data.data.map(value => {
+          value.user.hea_img =
+            localStorage.getItem('heima_40') + value.user.hea_img
+          return value
+        })
+      }
     }
   },
+
   // 点击关注或不关注
   methods: {
     async followThisUser () {
@@ -89,7 +106,7 @@ export default {
         res = await unFollowUser(this.article.user.id)
         // 修改元素所绑定的数据,实现页面元素效果的刷新
         this.$toast.success(res.data.message)
-        // 提示
+
         this.article.has_follow = false
       } else {
         // 未关注
@@ -108,7 +125,7 @@ export default {
     // 点赞和取消点赞
     async likeThisArticle () {
       let res = await likeArticleById(this.article.id)
-      console.log(res)
+      // console.log(res)
       if (res.data.message === '点赞成功') {
         // 重置点赞数量
         this.article.like_length++
@@ -116,17 +133,21 @@ export default {
       } else if (res.data.message === '取消成功') {
         // 重置点赞数量
         this.article.like_length--
-        this.article.has_like = !this.article.has_like
       }
+      this.article.has_like = !this.article.has_like
       // 提示
       this.$toast.success(res.data.message)
     }
-  }
+  },
+
+  getCommentsById
 }
 </script>
 
 <style lang="less" scoped>
-.articaldetail{  padding-bottom: 50px;}
+.articaldetail {
+  padding-bottom: 50px;
+}
 
 .header {
   padding: 0px 10px;

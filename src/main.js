@@ -12,7 +12,7 @@ import {
   Tabs,
   List,
   PullRefresh
-} from 'vant'
+  , Search } from 'vant'
 
 import router from '@/router/index'
 
@@ -27,6 +27,7 @@ Vue.use(Tab)
 Vue.use(Tabs)
 Vue.use(List)
 Vue.use(PullRefresh)
+Vue.use(Search)
 
 Vue.config.productionTip = false
 

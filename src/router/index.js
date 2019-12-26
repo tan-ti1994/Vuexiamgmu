@@ -8,7 +8,11 @@ import Personal from '@/views/Personal.vue'
 import bianji from '@/views/bianji.vue'
 import Register from '@/views/Register.vue'
 import Index from '@/views/index.vue'
-import xianqingye from '../views/xianqingye.vue'
+import xianqingye from '@/views/xianqingye.vue'
+import zhongxing from '@/views/zhongxing.vue'
+import myCollections from '@/views/collections.vue'
+import comments from '@/views/comments.vue'
+import search from '@/views/search.vue'
 // 3.use
 Vue.use(VueRouter)
 // 4创建路由对象,进行路由配置
@@ -47,9 +51,29 @@ var router = new VueRouter({
       component: bianji
     },
     {
-      name: 'bixianqingyeanji',
+      name: 'xianqingye',
       path: '/xianqingye/:id',
       component: xianqingye
+    },
+    {
+      name: 'zhongxing',
+      path: '/zhongxing/:id',
+      component: zhongxing
+    },
+    {
+      name: 'myCollections',
+      path: '/myCollections',
+      component: myCollections
+    },
+    {
+      name: 'comments',
+      path: '/comments/:id',
+      component: comments
+    },
+    {
+      name: 'search',
+      path: '/search',
+      component: search
     }
   ]
 })
